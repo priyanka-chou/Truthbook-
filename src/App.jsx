@@ -1,12 +1,10 @@
 import React from 'react'
-import Navbar from "./components/Navbar.jsx"
-import StoryBar from './components/StoryBar.jsx'
+import LoginPage from './pages/LoginPage';
 
 const App = () => {
   return (
     <div>
-     <Navbar/>
-     <StoryBar/>
+      <LoginPage/>   
     </div>
   )
 }
