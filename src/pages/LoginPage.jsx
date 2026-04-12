@@ -1,7 +1,7 @@
 
 
 
-
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 const styles = `
@@ -248,9 +248,54 @@ const styles = `
 
 export default function LoginPage() {
 
+
+
+  
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+
+
+
+const navigate = useNavigate();
+
+const handleLogin = async () => {
+  const res = await fetch("http://localhost:3000/api/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ email, password })
+  });
+
+  const data = await res.json();
+
+  if (data.success) {
+    localStorage.setItem("token", data.token);
+    navigate("/home");
+  } else {
+    alert(data.message); // ✅ FIXED
+  }
+};
+
+
+const handleSignup = async () => {
+  const res = await fetch("http://localhost:3000/api/signup", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ email, password })
+  });
+
+  const data = await res.text();
+
+  alert(data);
+
+  // 🔥 redirect to OTP page
+  navigate("/verify");
+};
 
   return (
     <>
@@ -299,8 +344,12 @@ export default function LoginPage() {
 
           {/* Buttons */}
           <div className="actions">
-            <button className="btn-login">Login</button>
-            <button className="btn-signup">Sign Up</button>
+            <button className="btn-login" onClick={handleLogin}>
+              Login
+           </button>
+            <button className="btn-signup" onClick={handleSignup}>
+  Sign Up
+</button>
           </div>
 
           {/* Forgot */}
