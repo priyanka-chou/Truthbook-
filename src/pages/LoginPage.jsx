@@ -261,40 +261,40 @@ export default function LoginPage() {
 const navigate = useNavigate();
 
 const handleLogin = async () => {
-  const res = await fetch("http://localhost:3000/api/login", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ email, password })
-  });
+  try {
+    const res = await fetch("http://localhost:3000/api/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ email, password })
+    });
 
-  const data = await res.json();
+    const data = await res.json();
 
-  if (data.success) {
-    localStorage.setItem("token", data.token);
-    navigate("/home");
-  } else {
-    alert(data.message); // ✅ FIXED
+    if (data.success) {
+      localStorage.setItem("token", data.token);
+
+      // 🔥 redirect to home
+      window.location.href = "/";
+    } else {
+      alert(data.message || "Login failed ❌");
+    }
+
+  } catch (err) {
+    console.log(err);
+    alert("Server error ❌");
   }
 };
 
 
-const handleSignup = async () => {
-  const res = await fetch("http://localhost:3000/api/signup", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ email, password })
-  });
+const handleSignup = () => {
+  if (!email) {
+    alert("Enter email first ❌");
+    return;
+  }
 
-  const data = await res.text();
-
-  alert(data);
-
-  // 🔥 redirect to OTP page
-  navigate("/verify");
+  navigate("/send-otp", { state: { email } });
 };
 
   return (
@@ -336,7 +336,7 @@ const handleSignup = async () => {
                 onChange={e => setPassword(e.target.value)}
                 style={{ paddingRight: "70px" }}
               />
-              <button className="show-btn" onClick={() => setShowPassword(s => !s)}>
+              <button type="button" className="show-btn" onClick={() => setShowPassword(s => !s)}>
                 {showPassword ? "Hide" : "Show"}
               </button>
             </div>

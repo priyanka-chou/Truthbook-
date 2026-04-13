@@ -3,6 +3,7 @@ import LoginPage from "./pages/LoginPage";
 import OtpVerifyPage from "./pages/OtpVerifyPage";
 import ProfilePage from "./pages/ProfilePage";
 import HomePage from "./pages/HomePage";
+import SendOtpPage from "./pages/SendOtpPage"; // ✅ added
 
 function App() {
   const token = localStorage.getItem("token");
@@ -11,19 +12,15 @@ function App() {
     <BrowserRouter>
       <Routes>
 
-        {/* Root */}
         <Route path="/" element={token ? <HomePage /> : <LoginPage />} />
 
-        {/* OTP */}
+        {/* ✅ Send OTP page */}
+        <Route path="/send-otp" element={<SendOtpPage />} />
+
+        {/* OTP verify */}
         <Route path="/verify" element={<OtpVerifyPage />} />
 
-        {/* 🔐 Protected Home */}
-        <Route 
-          path="/home" 
-          element={token ? <HomePage /> : <Navigate to="/" />} 
-        />
-
-        {/* 🔐 Protected Profile */}
+        {/* Profile */}
         <Route 
           path="/profile" 
           element={token ? <ProfilePage /> : <Navigate to="/" />} 

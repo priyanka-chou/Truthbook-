@@ -52,11 +52,11 @@ const posts = [
 ];
 
 const navItems = [
-  { icon: "🏠", label: "Home", active: true },
-  { icon: "🔍", label: "Search", active: false },
+  { icon: "🏠", label: "Home", path: "/" },
+  { icon: "🔍", label: "Search", path: "/search" },
   { icon: null, label: null, isCenter: true },
-  { icon: "💬", label: "Messages", active: false },
-  { icon: "👤", label: "Profile", active: false },
+  { icon: "💬", label: "Messages", path: "/messages" },
+  { icon: "👤", label: "Profile", path: "/profile" },
 ];
 
 export default function TruthBook() {
@@ -69,17 +69,17 @@ export default function TruthBook() {
       justifyContent: "center",
       alignItems: "center",
       minHeight: "100vh",
-      background: "linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #1e1b4b 100%)",
+      background: "#e8e6f0",
       fontFamily: "'Georgia', serif",
     }}>
       {/* Phone frame */}
       <div style={{
-        width: 375,
-        height: 812,
+        width: "375px",
+        height: "720px",
         background: "#f8f7ff",
-        borderRadius: 50,
+        borderRadius: "50px",
         overflow: "hidden",
-        boxShadow: "0 40px 80px rgba(0,0,0,0.5), 0 0 0 2px #3730a3, inset 0 0 0 1px rgba(255,255,255,0.1)",
+        boxShadow: "0 32px 80px rgba(100, 60, 180, 0.18), 0 2px 8px rgba(0,0,0,0.08)",
         display: "flex",
         flexDirection: "column",
         position: "relative",
@@ -96,12 +96,7 @@ export default function TruthBook() {
           color: "#1e1b4b",
           fontFamily: "'SF Pro Display', sans-serif",
         }}>
-          <span>9:41</span>
-          <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
-            <span style={{ fontSize: 11 }}>▲▲▲</span>
-            <span style={{ fontSize: 11 }}>WiFi</span>
-            <span style={{ fontSize: 11 }}>🔋</span>
-          </div>
+
         </div>
 
         {/* Header */}
@@ -251,10 +246,21 @@ export default function TruthBook() {
                 onMouseLeave={e => e.currentTarget.style.transform = "scale(1)"}
               >+</button>
             ) : (
-              <button key={i} onClick={() => setActiveNav(item.label)} style={{
-                background: "none", border: "none", cursor: "pointer",
-                display: "flex", flexDirection: "column", alignItems: "center", gap: 2,
-              }}>
+              <button
+                key={i}
+                onClick={() => {
+                  if (item.path) {
+                    navigate(item.path);
+                  }
+                    setActiveNav(item.label);
+
+                  
+                }
+                }
+                style={{
+                  background: "none", border: "none", cursor: "pointer",
+                  display: "flex", flexDirection: "column", alignItems: "center", gap: 2,
+                }}>
                 <span style={{ fontSize: 20 }}>{item.icon}</span>
                 <span style={{
                   fontSize: 10, fontFamily: "sans-serif",
