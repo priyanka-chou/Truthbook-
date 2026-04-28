@@ -1,5 +1,3 @@
-
-
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -77,7 +75,7 @@ export default function TruthBook() {
   const canvasRef = useRef(null);
   const streamRef = useRef(null);
   const fileInputRef = useRef(null);
- 
+  const [myStories, setMyStories] = useState([]); // ✅ NEW
 const [showSlideshow, setShowSlideshow] = useState(false); // ✅ NEW
 const [slideIndex, setSlideIndex] = useState(0);
 const timerRef = useRef(null);
@@ -525,40 +523,26 @@ const handleStoryClick = (story) => {
           </div>
         )}
 
-       {/* ── SLIDESHOW ── */}
+        {/* ── SLIDESHOW ── */}
 {showSlideshow && (
   <div style={{
     position: "absolute", inset: 0, background: "#000",
     zIndex: 2000, display: "flex", flexDirection: "column",
     borderRadius: "50px", overflow: "hidden",
   }}>
-    {/* Progress bars - animated */}
+    {/* Progress bars */}
     <div style={{ display: "flex", gap: 4, padding: "12px 12px 0" }}>
       {myStories.map((_, i) => (
         <div key={i} style={{
           flex: 1, height: 3, borderRadius: 2,
-          background: "rgba(255,255,255,0.3)",
-          overflow: "hidden",
-        }}>
-          <div style={{
-            height: "100%",
-            borderRadius: 2,
-            background: "#fff",
-            width: i < slideIndex ? "100%" : i === slideIndex ? "100%" : "0%",
-            // ✅ Sirf current story animate hogi
-            animation: i === slideIndex ? "progressAnim 15s linear forwards" : "none",
-          }} />
-        </div>
+          background: i <= slideIndex ? "#fff" : "rgba(255,255,255,0.3)",
+        }} />
       ))}
     </div>
 
     {/* Close */}
     <div style={{ display: "flex", justifyContent: "flex-end", padding: "8px 16px" }}>
-      <button
-        onClick={() => {
-          clearTimeout(timerRef.current); // ✅ timer band karo
-          setShowSlideshow(false);
-        }}
+      <button onClick={() => setShowSlideshow(false)}
         style={{ background: "none", border: "none", color: "#fff", fontSize: 20, cursor: "pointer" }}>
         ✕
       </button>
@@ -566,36 +550,15 @@ const handleStoryClick = (story) => {
 
     {/* Image */}
     <div style={{ flex: 1, position: "relative" }}>
-      <img
-        src={myStories[slideIndex].image}
-        style={{ width: "100%", height: "100%", objectFit: "cover" }}
-      />
-
-      {/* ✅ Auto timer - 15 sec baad next */}
-      {(() => {
-        clearTimeout(timerRef.current);
-        timerRef.current = setTimeout(() => {
-          if (slideIndex < myStories.length - 1) {
-            setSlideIndex(i => i + 1);
-          } else {
-            setShowSlideshow(false); // sari stories khatam
-          }
-        }, 15000);
-        return null;
-      })()}
+      <img src={myStories[slideIndex].image}
+        style={{ width: "100%", height: "100%", objectFit: "cover" }} />
 
       {/* Prev / Next tap */}
       <div style={{ position: "absolute", inset: 0, display: "flex" }}>
-        {/* Left tap - previous */}
+        <div style={{ flex: 1 }}
+          onClick={() => setSlideIndex(i => Math.max(0, i - 1))} />
         <div style={{ flex: 1 }}
           onClick={() => {
-            clearTimeout(timerRef.current); // ✅ timer reset
-            setSlideIndex(i => Math.max(0, i - 1));
-          }} />
-        {/* Right tap - next */}
-        <div style={{ flex: 1 }}
-          onClick={() => {
-            clearTimeout(timerRef.current); // ✅ timer reset
             if (slideIndex < myStories.length - 1) {
               setSlideIndex(i => i + 1);
             } else {
@@ -605,16 +568,11 @@ const handleStoryClick = (story) => {
       </div>
     </div>
 
-    {/* Bottom - Add More */}
-    <div style={{ display: "flex", justifyContent: "flex-end", padding: "8px 20px 20px" }}>
+    {/* Count + Add button */}
+    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 20px 20px" }}>
+      <span style={{ color: "#fff", fontSize: 13 }}>{slideIndex + 1} / {myStories.length}</span>
       {myStories.length < 15 && (
-        <button
-          onClick={() => {
-            clearTimeout(timerRef.current);
-            setShowSlideshow(false);
-            setMode("story");
-            setShowOptions(true);
-          }}
+        <button onClick={() => { setShowSlideshow(false); setMode("story"); setShowOptions(true); }}
           style={{
             background: "#6366f1", color: "#fff", border: "none",
             borderRadius: 10, padding: "8px 16px", fontSize: 13,
@@ -624,14 +582,6 @@ const handleStoryClick = (story) => {
     </div>
   </div>
 )}
-
-{/* ✅ Animation CSS */}
-<style>{`
-  @keyframes progressAnim {
-    from { width: 0%; }
-    to { width: 100%; }
-  }
-`}</style>
 
         {/* ── CAMERA SCREEN ── */}
         {showCamera && (

@@ -5,6 +5,7 @@ import ProfilePage from "./pages/ProfilePage";
 import HomePage from "./pages/HomePage";
 import SendOtpPage from "./pages/SendOtpPage"; // ✅ added
 import CreatePost from "./pages/CreatePost";  
+import SearchPage from "./pages/SearchPage";
 
 function App() {
   const token = localStorage.getItem("token");
@@ -14,6 +15,8 @@ function App() {
       <Routes>
 
         <Route path="/" element={token ? <HomePage /> : <LoginPage />} />
+
+        <Route path="/search" element={<SearchPage />} />
 
         {/* ✅ Send OTP page */}
         <Route path="/send-otp" element={<SendOtpPage />} />
