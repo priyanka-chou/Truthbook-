@@ -3,8 +3,9 @@ import LoginPage from "./pages/LoginPage";
 import OtpVerifyPage from "./pages/OtpVerifyPage";
 import ProfilePage from "./pages/ProfilePage";
 import HomePage from "./pages/HomePage";
-import SendOtpPage from "./pages/SendOtpPage"; // ✅ added
-import CreatePost from "./pages/CreatePost";  
+import SendOtpPage from "./pages/SendOtpPage"; 
+
+import  MessagePage from "./pages/MessagePage"; 
 
 function App() {
   const token = localStorage.getItem("token");
@@ -26,7 +27,8 @@ function App() {
           path="/profile" 
           element={token ? <ProfilePage /> : <Navigate to="/" />} 
         />
-            <Route path="/create-post" element={<CreatePost />} />
+
+            <Route path="/messages" element={<MessagePage />} />
       </Routes>
     </BrowserRouter>
   );

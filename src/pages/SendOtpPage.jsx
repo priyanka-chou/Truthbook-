@@ -27,7 +27,7 @@ const handleSendOtp = async () => {
   }
 
   try {
-    const res = await fetch("http://localhost:3000/api/signup", {
+    const res = await fetch("https://truthbookserver-iipd.onrender.com/api/auth/sent-otp", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

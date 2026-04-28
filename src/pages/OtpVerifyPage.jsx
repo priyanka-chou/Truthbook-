@@ -86,7 +86,7 @@ export default function TruthBookOTP() {
   setVerifying(true);
 
   try {
-    const res = await fetch("http://localhost:3000/api/verify-otp", {
+    const res = await fetch("https://truthbookserver-iipd.onrender.com/api/auth/verify-otp", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
